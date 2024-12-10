@@ -1,0 +1,35 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+    nzTheme="light"
+    nzCollapsible
+    nzWidth="180px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+    </div>
+    <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item>
+        <!-- <span nz-icon nzType="profile"></span> -->
+        <span routerLink="/home">法官列表</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <span class="trigger" nz-icon
+             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'">
+            </span>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

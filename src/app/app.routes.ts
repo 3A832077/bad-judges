@@ -1,0 +1,6 @@
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: '/homme' },
+  { path: 'home', loadChildren: () => import('./pages/home/home.routes').then(m => m.WELCOME_ROUTES), }
+];
