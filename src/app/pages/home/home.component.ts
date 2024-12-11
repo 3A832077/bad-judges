@@ -8,7 +8,10 @@ import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [NzCardModule, NzGridModule, NzAvatarModule, CommonModule, RouterLink, RouterOutlet],
+  imports: [
+              NzCardModule, NzGridModule, NzAvatarModule,
+              CommonModule, RouterLink, RouterOutlet,
+           ],
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -72,20 +75,20 @@ export class HomeComponent implements OnInit {
     },
     {
       id: 10,
-      name: 'dinoateng',
-      description: '和BOBO是好朋友',
+      name: 'dinotaeng',
+      description: '短尾矮袋鼠',
       avatarUrl: '10.jpg'
     },
     {
       id: 11,
-      name: '茱蒂',
-      description: '電馭叛客2077',
+      name: '泳知',
+      description: '高等rapper3 冠軍',
       avatarUrl: '11.jpg'
     },
     {
       id: 12,
-      name: '那孩子',
-      description: 'chiikawa',
+      name: 'yoasobi',
+      description: '我推的idol',
       avatarUrl: '12.jpg'
     },
     {
@@ -103,20 +106,22 @@ export class HomeComponent implements OnInit {
     {
       id: 15,
       name: '萊恩',
-      description: 'KAKAO FRIENDS',
+      description: '是獅子不是熊😡',
       avatarUrl: '15.jpg'
     },
     {
       id: 16,
       name: '熊老闆商會員工',
-      description: '超累打工==',
+      description: '金麟片拿來!!',
       avatarUrl: '16.jpg'
     }
   ];
 
   selectedId: string | null = null;
 
-  constructor(private router: Router) { }
+  constructor (
+                private router: Router
+              ) { }
 
   ngOnInit() {
     // 監聽路由變化
@@ -130,12 +135,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  toMessageBoard(id: number): void {
-    this.router.navigate(['/home/detail', id]);
+  /**
+   * 點選卡片時，導向詳細頁面
+   * @param id
+   * @param name
+   * @param detail
+   * @param pic
+   */
+  toMessageBoard(id: number, name: string, detail: string, pic: string): void {
+    this.router.navigateByUrl('/home/detail/'+ id , {
+      state: { info: { name: name, detail: detail, pic: pic } },
+    });
   }
 
+  /**
+   * 點選詳細時，將 id 設定給 selectedId
+   * @param event
+   */
   onActivate(event: any) {
-    // 當子路由被啟動時的處理邏輯
     this.selectedId = event;
   }
 

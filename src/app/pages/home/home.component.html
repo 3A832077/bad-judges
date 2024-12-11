@@ -1,7 +1,7 @@
 <div nz-row [nzGutter]="8" *ngIf="!selectedId">
   <ng-container *ngFor="let item of lists">
-    <div nz-col [nzSpan]="8" [nzXl]="6" [nzLg]="8" [nzMd]="12" [nzSm]="16" style="padding: 10px;">
-      <nz-card style ="cursor: pointer;" (click)="toMessageBoard(item.id)">
+    <div nz-col [nzSpan]="8" [nzXl]="6" [nzLg]="8" [nzMd]="12" [nzSm]="16" style="padding: 10px;" >
+      <nz-card class="pointer" (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
         <nz-card-meta
           [nzAvatar]="avatarTemplate"
           [nzTitle]="item.name"
@@ -10,7 +10,7 @@
       </nz-card>
       <ng-template #avatarTemplate>
         <nz-avatar [nzSize]="120" [nzSrc]="item.avatarUrl"
-         (click)="toMessageBoard(item.id)">
+         (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
         </nz-avatar>
       </ng-template>
     </div>
