@@ -25,6 +25,16 @@
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "public"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "public",
+                "output": ""
+              },
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": ""
               }
             ],
             "styles": [
@@ -94,7 +104,10 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+              "baseHref": "https://3a832077.github.io/bad-judges/"
+            }
         }
       }
     }
