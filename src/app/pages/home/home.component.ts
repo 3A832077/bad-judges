@@ -3,14 +3,27 @@ import { CommonModule } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzPaginationModule  } from 'ng-zorro-antd/pagination';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+
+type List = {
+  id: number;
+  name: string;
+  description: string;
+  avatarUrl: string;
+};
 
 @Component({
   selector: 'app-home',
   imports: [
               NzCardModule, NzGridModule, NzAvatarModule,
               CommonModule, RouterLink, RouterOutlet,
+              NzPaginationModule, NzInputModule, NzIconModule,
+              FormsModule, ReactiveFormsModule
            ],
   standalone: true,
   templateUrl: './home.component.html',
@@ -18,7 +31,7 @@ import { filter } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  lists: any = [
+  lists: List[] = [
     {
       id: 1,
       name: '娜璉',
@@ -119,11 +132,34 @@ export class HomeComponent implements OnInit {
 
   selectedId: string | null = null;
 
+  displayedList: any[] = this.lists;
+
+  filteredLists: any[] = [];
+
+  isFiltered: boolean = false;
+
+  form: FormGroup = new FormGroup({});
+
+  totalPages: number = this.displayedList.length / 12;
+
+  total: number = this.displayedList.length;
+
+  currentPage: number = 1;
+
   constructor (
-                private router: Router
-              ) { }
+                private router: Router,
+                private formBuilder: FormBuilder
+         ) {}
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      serach: [''],
+    });
+
+    this.totalPages = Math.ceil(this.lists.length / 12);
+    this.filteredLists = this.lists;
+    this.updateDisplayedList();
+
     // 監聽路由變化
     this.router.events.pipe(
       filter((event: any) => event instanceof NavigationEnd)
@@ -154,6 +190,56 @@ export class HomeComponent implements OnInit {
    */
   onActivate(event: any) {
     this.selectedId = event;
+  }
+
+  /**
+   * 換頁
+   * @param index
+   * @returns
+   */
+  pageChange(index: number): void {
+    // 邊界檢查
+    if (index < 1 || index > this.totalPages) {
+      return;
+    }
+    // 更新當前頁碼
+    this.currentPage = index;
+    // 計算顯示的列表範圍
+    const startIndex = (index - 1) * 12;
+    const endIndex = Math.min(index * 12, this.lists.length);
+    // 更新顯示的列表
+    this.displayedList = this.lists.slice(startIndex, endIndex);
+  }
+
+  /**
+   * 按下enter搜尋列表
+   * @param event
+   */
+  searchList(event: any): any {
+    if (event.key === 'Enter') {
+      const searchTerm = event.target.value.trim();
+      const startIndex = (this.currentPage - 1) * 12;
+      const endIndex = Math.min(startIndex + 12, this.lists.length);
+      const currentPageItems = this.lists.slice(startIndex, endIndex);
+
+      if (searchTerm === '') {
+        this.filteredLists = currentPageItems;
+      } else {
+        this.filteredLists = currentPageItems.filter((item) =>
+          item.name.indexOf(searchTerm) !== -1
+        );
+      }
+      this.updateDisplayedList();
+    }
+  }
+
+  /**
+   *根據當前頁碼和已篩選的列表，更新顯示的列表
+  */
+  updateDisplayedList() {
+    const startIndex = (this.currentPage - 1) * 12;
+    const endIndex = Math.min(startIndex + 12, this.filteredLists.length);
+    this.displayedList = this.filteredLists.slice(startIndex, endIndex);
   }
 
 }

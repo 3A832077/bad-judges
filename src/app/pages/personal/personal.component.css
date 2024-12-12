@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+}
+
+nz-card {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.actions button {
+  margin-left: 8px;
+}
+
+.profile-avatar {
+  margin-right: 30px;
+}
+
+:host::ng-deep.ant-card-body{
+
+}

@@ -21,9 +21,13 @@ export class AppComponent {
   constructor (
                private router: Router
               ) { }
-
+  /**
+   * 僅當前路徑完全相等時返回 true
+   * @param url
+   * @returns
+   */
   isActive(url: string): boolean {
-    return this.router.url === url; // 僅當前路徑完全相等時返回 true
+    return this.router.url === url;
   }
 
 }

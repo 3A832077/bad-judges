@@ -1,21 +1,45 @@
-<div nz-row [nzGutter]="8" *ngIf="!selectedId">
-  <ng-container *ngFor="let item of lists">
-    <div nz-col [nzSpan]="8" [nzXl]="6" [nzLg]="8" [nzMd]="12" [nzSm]="16" style="padding: 10px;" >
-      <nz-card class="pointer" (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
-        <nz-card-meta
-          [nzAvatar]="avatarTemplate"
-          [nzTitle]="item.name"
-          [nzDescription]="item.description">
-        </nz-card-meta>
-      </nz-card>
-      <ng-template #avatarTemplate>
-        <nz-avatar [nzSize]="120" [nzSrc]="item.avatarUrl"
-         (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
-        </nz-avatar>
-      </ng-template>
-    </div>
-  </ng-container>
-</div>
+<ng-container *ngIf="!selectedId">
+  <div nz-col [nzSpan]="4">
+    <form nz-form [formGroup]="form">
+      <nz-form-item>
+        <nz-form-control [nzSpan]="18">
+          <nz-input-group nzSuffixIcon="search">
+            <input formControlName="search" nz-input placeholder="請輸入關鍵字"
+            (keypress)="searchList($event)" formControlName="serach"/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+  <div nz-row [nzGutter]="24" style="padding-top: 20px;">
+    <ng-container *ngFor="let item of displayedList">
+      <div nz-col [nzSpan]="24" [nzXl]="6" [nzLg]="8" [nzMd]="12" [nzSm]="16" style="padding: 10px;" >
+        <nz-card class="pointer" (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
+          <nz-card-meta
+            [nzAvatar]="avatarTemplate"
+            [nzTitle]="item.name"
+            [nzDescription]="item.description">
+          </nz-card-meta>
+        </nz-card>
+        <ng-template #avatarTemplate>
+          <nz-avatar [nzSize]="120" [nzSrc]="item.avatarUrl"
+          (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
+          </nz-avatar>
+        </ng-template>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="displayedList.length === 0">
+      <div nz-col [nzSpan]="24" style="text-align: center;">
+        <img src="search.png">
+        <h1>查無資料</h1>
+      </div>
+    </ng-container>
+  </div>
+  <nz-pagination [nzPageIndex]="currentPage" [nzTotal]="total"
+    [nzPageSize]="12" nzResponsive (nzPageIndexChange)="pageChange($event)"
+    *ngIf="displayedList.length > 0">
+  </nz-pagination>
+</ng-container>
 
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 

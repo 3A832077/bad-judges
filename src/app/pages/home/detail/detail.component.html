@@ -1,23 +1,22 @@
-<div class="character-detail-container" >
+<div class="character-detail-container">
 
-  <nz-page-header [nzTitle]="info?.name" [nzSubtitle]="info?.detail"></nz-page-header>
-
-  <nz-row>
+  <nz-card>
+    <nz-page-header [nzTitle]="info?.name" [nzSubtitle]="info?.detail"></nz-page-header>
+    <nz-row>
     <nz-col [nzSpan]="24" class="character-info">
       <img
         [src]="info.pic"
         [alt]="info?.name"
         class="character-avatar">
     </nz-col>
-  </nz-row>
+    </nz-row>
 
-  <div nz-row class="comment-section">
-
+    <div nz-row class="comment-section">
     <nz-col [nzSpan]="24">
-      <nz-card>
+      <nz-divider></nz-divider>
         <h1>留言區</h1>
         <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal" *ngIf="data.length">
-          <ng-template #item let-item>
+          <ng-template #item let-item let-index="index">
             <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
               <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
               <nz-comment-content>
@@ -29,10 +28,7 @@
                   nzTooltipTitle="讚"
                   nz-icon
                   nzType="like"
-                  [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
-                  (click)="like()"
                 ></span>
-                <span class="count like">{{ likes }}</span>
               </nz-comment-action>
               <nz-comment-action>
                 <span
@@ -40,12 +36,26 @@
                   nzTooltipTitle="不喜歡"
                   nz-icon
                   nzType="dislike"
-                  [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
-                  (click)="dislike()"
                 ></span>
-                <span class="count dislike">{{ dislikes }}</span>
               </nz-comment-action>
-              <nz-comment-action>回覆</nz-comment-action>
+              <nz-comment-action>
+                <span (click)="showReply(index, item.id)">回覆</span>
+              </nz-comment-action>
+              <nz-comment *ngIf="item.isReplying">
+                <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="info.pic"></nz-avatar>
+                <nz-comment-content>
+                  <nz-form-item>
+                    <textarea
+                      nz-input
+                      name="content"
+                      placeholder="請輸入留言">
+                    </textarea>
+                  </nz-form-item>
+                  <nz-form-item style="justify-content: flex-end;">
+                    <button nz-button nzType="primary">回覆</button>
+                  </nz-form-item>
+                </nz-comment-content>
+              </nz-comment>
             </nz-comment>
           </ng-template>
         </nz-list>
@@ -57,18 +67,18 @@
               <textarea
                 nz-input
                 name="content"
-                placeholder="請輸入留言">
+                placeholder="請輸入留言"
+                [(ngModel)]="inputValue">
               </textarea>
             </nz-form-item>
-            <nz-form-item>
-              <button nz-button nzType="primary" >
+            <nz-form-item style="justify-content: flex-end;">
+              <button nz-button nzType="primary" (click)="handleSubmit()">
                 新增留言
               </button>
             </nz-form-item>
           </nz-comment-content>
         </nz-comment>
-
-      </nz-card>
-    </nz-col>
-  </div>
+      </nz-col>
+    </div>
+  </nz-card>
 </div>

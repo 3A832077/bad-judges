@@ -12,8 +12,22 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { map, Observable } from 'rxjs';
 import { addDays, formatDistance } from 'date-fns';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+interface User {
+  author: string;
+  avatar: string;
+}
+
+interface Data extends User {
+  id: number;
+  isReplying: boolean;
+  content: string;
+  datetime: string;
+}
 
 @Component({
   selector: 'app-detail',
@@ -22,7 +36,8 @@ import { addDays, formatDistance } from 'date-fns';
             NzGridModule, NzAvatarModule, NzCommentModule,
             NzListModule, CommonModule, NzCardModule,
             NzFormModule, NzInputModule, NzButtonModule,
-            NzPageHeaderModule, NzIconModule, NzToolTipModule
+            NzPageHeaderModule, NzIconModule, NzToolTipModule,
+            NzDividerModule, FormsModule, ReactiveFormsModule
           ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.css'
@@ -35,28 +50,37 @@ export class DetailComponent implements OnInit {
 
   info: any = {}
 
-  likes = 0;
-  dislikes = 0;
   time = formatDistance(new Date(), new Date());
 
-  data = [
+  data:Data[] = [
     {
-      author: 'Han Solo',
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources' +
-        '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      datetime: formatDistance(new Date(), addDays(new Date(), 1))
+      id: 0,
+      author: '定延',
+      avatar: '2.jpg',
+      content: 'strategy 真的很好聽仙曲!',
+      isReplying: false,
+      datetime: formatDistance(new Date(), addDays(new Date(), 1)),
     },
     {
-      author: 'Han Solo',
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources' +
-        '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      id: 1,
+      author: '志效',
+      avatar: '5.jpg',
+      content: '根本是神專!',
+      isReplying: false,
       datetime: formatDistance(new Date(), addDays(new Date(), 2))
     }
   ];
+
+  inputValue = '';
+
+  datas: any = [];
+
+  submitting = false;
+
+  user: User = {
+    author: '子瑜',
+    avatar: '9.jpg'
+  };
 
   constructor (
                 private router: Router,
@@ -82,14 +106,36 @@ export class DetailComponent implements OnInit {
     );
   }
 
-  like(): void {
-    this.likes = 1;
-    this.dislikes = 0;
+  /**
+   * 顯示回復框
+   * @param id
+   * @param index
+   */
+  showReply(id: number, index: number): void {
+    if (id === index) {
+      this.data[index].isReplying = true;
+    }
   }
 
-  dislike(): void {
-    this.likes = 0;
-    this.dislikes = 1;
+  handleSubmit(): void {
+    this.submitting = true;
+    const content = this.inputValue;
+    this.inputValue = '';
+    setTimeout(() => {
+      this.submitting = false;
+      this.data = [
+        ...this.data,
+        {
+          ...this.user,
+          content,
+          isReplying: false,
+          id: this.data.length + 1,
+          datetime: formatDistance(new Date(), addDays(new Date(), 2))
+        }
+      ].map(e => ({
+        ...e,
+        datetime: formatDistance(new Date(), addDays(new Date(), 2))
+      }));
+    }, 800);
   }
-
 }
