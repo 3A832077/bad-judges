@@ -116,10 +116,94 @@
 
 .btn:hover {
   border: 1px solid #2d79f3;
-  ;
 }
 
 h2{
   text-align: center;
+}
+
+/* 基礎響應式設計 */
+@media screen and (max-width: 768px) {
+  .div {
+    height: auto;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  .flex-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .inputForm {
+    height: 45px;
+  }
+
+  .button-submit, .btn {
+    height: 45px;
+    font-size: 14px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+}
+
+/* 小型移動裝置的額外調整 */
+@media screen and (max-width: 480px) {
+  .div {
+    padding: 10px;
+  }
+
+  .form {
+    width: 315px;
+    padding: 15px;
+  }
+
+  .inputForm {
+    height: 40px;
+  }
+
+  .input {
+    font-size: 14px;
+  }
+
+  .button-submit, .btn {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .flex-column > label, .flex-row > div > label {
+    font-size: 13px;
+  }
+
+  .span {
+    font-size: 12px;
+  }
+}
+
+/* 確保表單在不同螢幕尺寸下居中和靈活 */
+.div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 防止文字過長溢出 */
+.input, .btn, .button-submit {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
