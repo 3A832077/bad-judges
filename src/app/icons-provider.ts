@@ -9,7 +9,8 @@ import {
   DislikeTwoTone,
   SearchOutline,
   UserOutline,
-  LockOutline
+  LockOutline,
+  MailOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const icons = [
@@ -17,5 +18,6 @@ export const icons = [
                         DashboardOutline, FormOutline,
                         LikeOutline,LikeTwoTone,
                         DislikeOutline, DislikeTwoTone,
-                        SearchOutline, UserOutline, LockOutline
+                        SearchOutline, UserOutline, LockOutline,
+                        MailOutline
                     ];

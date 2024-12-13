@@ -5,6 +5,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { Router } from '@angular/router';
 
 
@@ -17,7 +18,8 @@ import { Router } from '@angular/router';
             ReactiveFormsModule,
             NzInputModule,
             NzButtonModule,
-            NzFormModule
+            NzFormModule,
+            NzCheckboxModule
            ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      user: ['', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
@@ -44,10 +46,10 @@ export class LoginComponent implements OnInit {
   submitForm(): void {
     if (this.form.valid) {
       // 模擬登入邏輯
-      const { user, password } = this.form.value;
+      const { email, password } = this.form.value;
 
       // 簡單的登入驗證（實際應用中應使用後端服務）
-      if (user === 'admin' && password === '12345678') {
+      if (email === 'admin' && password === '12345678') {
         this.message.success('登入成功');
         this.router.navigate(['/home']);
       }
