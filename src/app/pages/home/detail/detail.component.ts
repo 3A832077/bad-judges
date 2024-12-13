@@ -4,7 +4,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -14,7 +14,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { map, Observable } from 'rxjs';
-import { addDays, formatDistance } from 'date-fns';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface User {
@@ -50,7 +49,11 @@ export class DetailComponent implements OnInit {
 
   info: any = {}
 
-  time = formatDistance(new Date(), new Date());
+  date = new Date();
+
+  format = 'yyyy-MM-dd HH:mm:ss';
+
+  formattedDate = formatDate(this.date, this.format, 'zh-TW');
 
   data:Data[] = [
     {
@@ -59,7 +62,7 @@ export class DetailComponent implements OnInit {
       avatar: '2.jpg',
       content: 'strategy 真的很好聽仙曲!',
       isReplying: false,
-      datetime: formatDistance(new Date(), addDays(new Date(), 1)),
+      datetime: this.formattedDate
     },
     {
       id: 1,
@@ -67,7 +70,7 @@ export class DetailComponent implements OnInit {
       avatar: '5.jpg',
       content: '根本是神專!',
       isReplying: false,
-      datetime: formatDistance(new Date(), addDays(new Date(), 2))
+      datetime: this.formattedDate
     }
   ];
 
@@ -77,10 +80,7 @@ export class DetailComponent implements OnInit {
 
   submitting = false;
 
-  user: User = {
-    author: '子瑜',
-    avatar: '9.jpg'
-  };
+  replyValue = '';
 
   constructor (
                 private router: Router,
@@ -121,21 +121,17 @@ export class DetailComponent implements OnInit {
     this.submitting = true;
     const content = this.inputValue;
     this.inputValue = '';
-    setTimeout(() => {
-      this.submitting = false;
-      this.data = [
-        ...this.data,
-        {
-          ...this.user,
-          content,
-          isReplying: false,
-          id: this.data.length + 1,
-          datetime: formatDistance(new Date(), addDays(new Date(), 2))
-        }
-      ].map(e => ({
-        ...e,
-        datetime: formatDistance(new Date(), addDays(new Date(), 2))
-      }));
-    }, 800);
+    this.submitting = false;
+    this.data = [
+      ...this.data,
+      {
+        author: this.info.name,
+        avatar: this.info.pic,
+        content,
+        isReplying: false,
+        id: this.data.length,
+        datetime: this.formattedDate,
+      }
+    ];
   }
 }

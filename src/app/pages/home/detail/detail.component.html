@@ -17,7 +17,7 @@
         <h1>留言區</h1>
         <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal" *ngIf="data.length">
           <ng-template #item let-item let-index="index">
-            <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
+            <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.datetime">
               <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
               <nz-comment-content>
                 <p>{{ item.content }}</p>
@@ -48,7 +48,8 @@
                     <textarea
                       nz-input
                       name="content"
-                      placeholder="請輸入留言">
+                      placeholder="請輸入留言"
+                      [(ngModel)]="replyValue">
                     </textarea>
                   </nz-form-item>
                   <nz-form-item style="justify-content: flex-end;">
