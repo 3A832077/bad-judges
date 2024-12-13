@@ -39,32 +39,33 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       email: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      remember: [true]
     });
   }
 
   submitForm(): void {
-    if (this.form.valid) {
-      // 模擬登入邏輯
-      const { email, password } = this.form.value;
+    // if (this.form.valid) {
+    //   // 模擬登入邏輯
+    //   const { email, password } = this.form.value;
 
-      // 簡單的登入驗證（實際應用中應使用後端服務）
-      if (email === 'admin' && password === '12345678') {
-        this.message.success('登入成功');
-        this.router.navigate(['/home']);
-      }
-      else {
-        this.message.error('帳號或密碼錯誤');
-      }
-    }
-    else {
-      Object.values(this.form.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
+    //   // 簡單的登入驗證（實際應用中應使用後端服務）
+    //   if (email === 'admin' && password === '12345678') {
+    //     this.message.success('登入成功');
+    //     this.router.navigate(['/home']);
+    //   }
+    //   else {
+    //     this.message.error('帳號或密碼錯誤');
+    //   }
+    // }
+    // else {
+    //   Object.values(this.form.controls).forEach(control => {
+    //     if (control.invalid) {
+    //       control.markAsDirty();
+    //       control.updateValueAndValidity({ onlySelf: true });
+    //     }
+    //   });
+    // }
   }
 
 }
