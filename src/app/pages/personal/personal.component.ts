@@ -14,17 +14,16 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFlexModule } from 'ng-zorro-antd/flex'
 
 @Component({
-  selector: 'app-personal',
-  standalone: true,
-  imports: [
-             CommonModule, FormsModule, NzAvatarModule,
-             NzCardModule, NzIconModule, NzButtonModule,
-             NzDividerModule, NzGridModule, NzRadioModule,
-             NzDatePickerModule, NzSwitchModule, ReactiveFormsModule,
-             NzInputModule, NzFlexModule
-           ],
-  templateUrl: './personal.component.html',
-  styleUrl: './personal.component.css'
+    selector: 'app-personal',
+    imports: [
+        CommonModule, FormsModule, NzAvatarModule,
+        NzCardModule, NzIconModule, NzButtonModule,
+        NzDividerModule, NzGridModule, NzRadioModule,
+        NzDatePickerModule, NzSwitchModule, ReactiveFormsModule,
+        NzInputModule, NzFlexModule
+    ],
+    templateUrl: './personal.component.html',
+    styleUrl: './personal.component.css'
 })
 export class PersonalComponent implements OnInit {
 

@@ -7,12 +7,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet,
-            NzIconModule, NzLayoutModule, NzMenuModule, NzCardModule],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    imports: [CommonModule, RouterLink, RouterOutlet,
+        NzIconModule, NzLayoutModule, NzMenuModule, NzCardModule],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent {
 

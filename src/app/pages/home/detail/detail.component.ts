@@ -29,17 +29,16 @@ interface Data extends User {
 }
 
 @Component({
-  selector: 'app-detail',
-  standalone: true,
-  imports:[
-            NzGridModule, NzAvatarModule, NzCommentModule,
-            NzListModule, CommonModule, NzCardModule,
-            NzFormModule, NzInputModule, NzButtonModule,
-            NzPageHeaderModule, NzIconModule, NzToolTipModule,
-            NzDividerModule, FormsModule, ReactiveFormsModule
-          ],
-  templateUrl: './detail.component.html',
-  styleUrl: './detail.component.css'
+    selector: 'app-detail',
+    imports: [
+        NzGridModule, NzAvatarModule, NzCommentModule,
+        NzListModule, CommonModule, NzCardModule,
+        NzFormModule, NzInputModule, NzButtonModule,
+        NzPageHeaderModule, NzIconModule, NzToolTipModule,
+        NzDividerModule, FormsModule, ReactiveFormsModule
+    ],
+    templateUrl: './detail.component.html',
+    styleUrl: './detail.component.css'
 })
 export class DetailComponent implements OnInit {
 

@@ -18,16 +18,15 @@ type List = {
 };
 
 @Component({
-  selector: 'app-home',
-  imports: [
-              NzCardModule, NzGridModule, NzAvatarModule,
-              CommonModule, RouterLink, RouterOutlet,
-              NzPaginationModule, NzInputModule, NzIconModule,
-              FormsModule, ReactiveFormsModule
-           ],
-  standalone: true,
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    imports: [
+        NzCardModule, NzGridModule, NzAvatarModule,
+        CommonModule, RouterLink, RouterOutlet,
+        NzPaginationModule, NzInputModule, NzIconModule,
+        FormsModule, ReactiveFormsModule
+    ],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 
