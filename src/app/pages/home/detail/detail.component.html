@@ -1,14 +1,15 @@
 <div class="character-detail-container">
-
+  <div>
+    <button nz-button nzType="link" (click)="goBack()" class="goBack">
+      返回法官列表
+    </button>
+  </div>
   <nz-card>
     <nz-page-header [nzTitle]="info?.name" [nzSubtitle]="info?.detail"></nz-page-header>
     <nz-row>
-    <nz-col [nzSpan]="24" class="character-info">
-      <img
-        [src]="info.pic"
-        [alt]="info?.name"
-        class="character-avatar">
-    </nz-col>
+      <nz-col [nzSpan]="24" class="character-info">
+        <img [src]="info.pic" [alt]="info?.name" class="character-avatar">
+      </nz-col>
     </nz-row>
 
     <div nz-row class="comment-section">
@@ -22,21 +23,17 @@
               <nz-comment-content>
                 <p>{{ item.content }}</p>
               </nz-comment-content>
-              <nz-comment-action>
-                <span
-                  nz-tooltip
-                  nzTooltipTitle="讚"
-                  nz-icon
-                  nzType="like"
-                ></span>
+              <nz-comment-action >
+                <span nz-tooltip nzTooltipTitle="讚" nz-icon nzType="like" (click)="like(index, item.id)"
+                  [nzTheme]="item.likes > 0 ? 'twotone' : 'outline'">
+                </span>
+                {{ item.likes }}
               </nz-comment-action>
               <nz-comment-action>
-                <span
-                  nz-tooltip
-                  nzTooltipTitle="不喜歡"
-                  nz-icon
-                  nzType="dislike"
-                ></span>
+                <span nz-tooltip nzTooltipTitle="不喜歡" nz-icon nzType="dislike" (click)="dislike(index, item.id)"
+                  [nzTheme]="item.dislikes > 0 ? 'twotone' : 'outline'">
+                </span>
+                {{ item.dislikes }}
               </nz-comment-action>
               <nz-comment-action>
                 <span (click)="showReply(index, item.id)">回覆</span>
@@ -45,11 +42,7 @@
                 <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="info.pic"></nz-avatar>
                 <nz-comment-content>
                   <nz-form-item>
-                    <textarea
-                      nz-input
-                      name="content"
-                      placeholder="請輸入留言"
-                      [(ngModel)]="replyValue">
+                    <textarea nz-input name="content" placeholder="請輸入留言" [(ngModel)]="replyValue">
                     </textarea>
                   </nz-form-item>
                   <nz-form-item style="justify-content: flex-end;">
@@ -65,11 +58,7 @@
           <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="info.pic"></nz-avatar>
           <nz-comment-content>
             <nz-form-item>
-              <textarea
-                nz-input
-                name="content"
-                placeholder="請輸入留言"
-                [(ngModel)]="inputValue">
+              <textarea nz-input name="content" placeholder="請輸入留言" [(ngModel)]="inputValue">
               </textarea>
             </nz-form-item>
             <nz-form-item style="justify-content: flex-end;">

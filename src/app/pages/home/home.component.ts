@@ -9,6 +9,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzListModule } from 'ng-zorro-antd/list';
 
 type List = {
   id: number;
@@ -23,7 +25,8 @@ type List = {
         NzCardModule, NzGridModule, NzAvatarModule,
         CommonModule, RouterLink, RouterOutlet,
         NzPaginationModule, NzInputModule, NzIconModule,
-        FormsModule, ReactiveFormsModule
+        FormsModule, ReactiveFormsModule, NzEmptyModule,
+        NzListModule
     ],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
@@ -135,11 +138,11 @@ export class HomeComponent implements OnInit {
 
   filteredLists: any[] = [];
 
-  isFiltered: boolean = false;
-
   form: FormGroup = new FormGroup({});
 
-  totalPages: number = this.displayedList.length / 12;
+  pageSize: number = 24;
+
+  totalPages: number = this.displayedList.length / this.pageSize;
 
   total: number = this.displayedList.length;
 
@@ -152,7 +155,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      serach: [''],
+      search: [null],
     });
 
     this.totalPages = Math.ceil(this.lists.length / 12);
@@ -196,16 +199,18 @@ export class HomeComponent implements OnInit {
    * @param index
    * @returns
    */
-  pageChange(index: number): void {
+  pageChange(index: number, size: number): void {
     // 邊界檢查
     if (index < 1 || index > this.totalPages) {
       return;
     }
     // 更新當前頁碼
     this.currentPage = index;
+    this.pageSize = size;
+
     // 計算顯示的列表範圍
-    const startIndex = (index - 1) * 12;
-    const endIndex = Math.min(index * 12, this.lists.length);
+    const startIndex = (index - 1) * size;
+    const endIndex = Math.min(index * size, this.lists.length);
     // 更新顯示的列表
     this.displayedList = this.lists.slice(startIndex, endIndex);
   }
@@ -217,13 +222,14 @@ export class HomeComponent implements OnInit {
   searchList(event: any): any {
     if (event.key === 'Enter') {
       const searchTerm = event.target.value.trim();
-      const startIndex = (this.currentPage - 1) * 12;
-      const endIndex = Math.min(startIndex + 12, this.lists.length);
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = Math.min(startIndex + this.pageSize, this.lists.length);
       const currentPageItems = this.lists.slice(startIndex, endIndex);
 
       if (searchTerm === '') {
         this.filteredLists = currentPageItems;
-      } else {
+      }
+      else {
         this.filteredLists = currentPageItems.filter((item) =>
           item.name.indexOf(searchTerm) !== -1
         );
@@ -236,8 +242,8 @@ export class HomeComponent implements OnInit {
    *根據當前頁碼和已篩選的列表，更新顯示的列表
   */
   updateDisplayedList() {
-    const startIndex = (this.currentPage - 1) * 12;
-    const endIndex = Math.min(startIndex + 12, this.filteredLists.length);
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = Math.min(startIndex + this.pageSize, this.filteredLists.length);
     this.displayedList = this.filteredLists.slice(startIndex, endIndex);
   }
 

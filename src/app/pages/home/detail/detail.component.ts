@@ -15,6 +15,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { map, Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 interface User {
   author: string;
@@ -26,17 +27,21 @@ interface Data extends User {
   isReplying: boolean;
   content: string;
   datetime: string;
+  dislikes: number;
+  likes: number;
+  liked?: boolean;
+  disliked?: boolean;
 }
 
 @Component({
     selector: 'app-detail',
     imports: [
-        NzGridModule, NzAvatarModule, NzCommentModule,
-        NzListModule, CommonModule, NzCardModule,
-        NzFormModule, NzInputModule, NzButtonModule,
-        NzPageHeaderModule, NzIconModule, NzToolTipModule,
-        NzDividerModule, FormsModule, ReactiveFormsModule
-    ],
+              NzGridModule, NzAvatarModule, NzCommentModule,
+              NzListModule, CommonModule, NzCardModule,
+              NzFormModule, NzInputModule, NzButtonModule,
+              NzPageHeaderModule, NzIconModule, NzToolTipModule,
+              NzDividerModule, FormsModule, ReactiveFormsModule
+            ],
     templateUrl: './detail.component.html',
     styleUrl: './detail.component.css'
 })
@@ -61,7 +66,11 @@ export class DetailComponent implements OnInit {
       avatar: '2.jpg',
       content: 'strategy 真的很好聽仙曲!',
       isReplying: false,
-      datetime: this.formattedDate
+      datetime: this.formattedDate,
+      dislikes: 0,
+      likes: 0,
+      liked: false,
+      disliked: false
     },
     {
       id: 1,
@@ -69,7 +78,11 @@ export class DetailComponent implements OnInit {
       avatar: '5.jpg',
       content: '根本是神專!',
       isReplying: false,
-      datetime: this.formattedDate
+      datetime: this.formattedDate,
+      dislikes: 0,
+      likes: 0,
+      liked: false,
+      disliked: false
     }
   ];
 
@@ -84,6 +97,7 @@ export class DetailComponent implements OnInit {
   constructor (
                 private router: Router,
                 private route: ActivatedRoute,
+                private message: NzMessageService
               ){
                 const navigationInfo = this.router.getCurrentNavigation()?.extras?.state?.['info'];
                 if (navigationInfo) {
@@ -112,16 +126,23 @@ export class DetailComponent implements OnInit {
    */
   showReply(id: number, index: number): void {
     if (id === index) {
-      this.data[index].isReplying = true;
+      this.data[index].isReplying = !this.data[index].isReplying;
     }
   }
 
+  /**
+   * 提交留言
+   */
   handleSubmit(): void {
     this.submitting = true;
     const content = this.inputValue;
     this.inputValue = '';
     this.submitting = false;
-    this.data = [
+    if (content === ''){
+      this.message.create('warning', '請輸入留言內容');
+    }
+    else{
+      this.data = [
       ...this.data,
       {
         author: this.info.name,
@@ -130,7 +151,52 @@ export class DetailComponent implements OnInit {
         isReplying: false,
         id: this.data.length,
         datetime: this.formattedDate,
+        dislikes: 0,
+        likes: 0
+      }];
+    }
+  }
+
+  /**
+   * 返回法官列表
+   */
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
+
+  /**
+   * 留言按讚
+   * @param id
+   * @param index
+   */
+  like(id: number, index: number): void {
+    if (id === index) {
+      if (this.data[id].liked) {
+        this.data[id].likes -= 1;
+        this.data[id].liked = false;
       }
-    ];
+      else {
+          this.data[id].likes += 1;
+          this.data[id].liked = true;
+      }
+    }
+  }
+
+  /**
+   * 留言倒讚
+   * @param id
+   * @param index
+   */
+  dislike(id: number, index: number): void {
+    if (id === index) {
+      if (this.data[id].disliked) {
+        this.data[id].dislikes -= 1;
+        this.data[id].disliked = false;
+      }
+      else {
+          this.data[id].dislikes += 1;
+          this.data[id].disliked = true;
+      }
+    }
   }
 }

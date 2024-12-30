@@ -70,3 +70,9 @@ button{
 nz-card{
   box-shadow: 1px 3px 0 2px #00000005;
 }
+
+.goBack{
+  position: relative;
+  top: -20px;
+  margin-left: -16px;
+}

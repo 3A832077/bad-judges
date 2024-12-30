@@ -6,11 +6,7 @@
 }
 
 .app-layout {
-  height: 100%;
-}
-
-.trigger:hover {
-  color: #1890ff;
+  /* height: 100%; */
 }
 
 nz-header {
@@ -34,14 +30,19 @@ nz-content {
 }
 
 .inner-content {
+  box-sizing: border-box;
   padding: 24px;
   background: #fff;
-  height: 100%;
-  overflow-x: hidden;
+  min-height: calc(100vh - 100px);
+  height: auto;
+  width: auto;
+  overflow: hidden;
 }
 
 .header-menu {
   line-height: 64px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .logo{
@@ -53,6 +54,7 @@ nz-content {
 
 nz-footer {
   text-align: center;
+  height: 30px;
 }
 
 
