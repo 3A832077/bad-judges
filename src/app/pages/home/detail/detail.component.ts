@@ -25,12 +25,14 @@ interface User {
 interface Data extends User {
   id: number;
   isReplying: boolean;
+  reply?: string;
   content: string;
   datetime: string;
   dislikes: number;
   likes: number;
   liked?: boolean;
   disliked?: boolean;
+  children?: any[];
 }
 
 @Component({
@@ -55,6 +57,8 @@ export class DetailComponent implements OnInit {
 
   date = new Date();
 
+  gId: number = 0;
+
   format = 'yyyy-MM-dd HH:mm:ss';
 
   formattedDate = formatDate(this.date, this.format, 'zh-TW');
@@ -70,7 +74,18 @@ export class DetailComponent implements OnInit {
       dislikes: 0,
       likes: 0,
       liked: false,
-      disliked: false
+      disliked: false,
+      children: [{
+        id: 0,
+        author: 'User 2',
+        avatar: 'https://example.com/avatar2.png',
+        content: 'This is a reply.',
+        datetime: '30 minutes ago',
+        likes: 0,
+        dislikes: 0,
+        isReplying: false,
+        children: [],
+      }],
     },
     {
       id: 1,
@@ -82,7 +97,7 @@ export class DetailComponent implements OnInit {
       dislikes: 0,
       likes: 0,
       liked: false,
-      disliked: false
+      disliked: false,
     }
   ];
 
@@ -120,40 +135,35 @@ export class DetailComponent implements OnInit {
   }
 
   /**
-   * 顯示回復框
-   * @param id
-   * @param index
+   * 新增留言或回覆
+   * @param content 留言或回覆的內容
+   * @param item 當筆要回復的資料
    */
-  showReply(id: number, index: number): void {
-    if (id === index) {
-      this.data[index].isReplying = !this.data[index].isReplying;
-    }
-  }
-
-  /**
-   * 提交留言
-   */
-  handleSubmit(): void {
-    this.submitting = true;
-    const content = this.inputValue;
-    this.inputValue = '';
-    this.submitting = false;
-    if (content === ''){
+  handleComment(content: string, item?: any): void {
+    if (content === '') {
       this.message.create('warning', '請輸入留言內容');
+      return;
     }
     else{
-      this.data = [
-      ...this.data,
-      {
-        author: this.info.name,
+      const comment = {
+        id: this.gId++,
+        author: '當前使用者',
         avatar: this.info.pic,
         content,
-        isReplying: false,
-        id: this.data.length,
         datetime: this.formattedDate,
+        likes: 0,
         dislikes: 0,
-        likes: 0
-      }];
+        isReplying: false,
+        children: []
+      };
+      if (item) {
+        item.children.push(comment);
+        item.isReplying = false;
+        this.replyValue = '';
+      }
+      else {
+        this.data.push(comment);
+      }
     }
   }
 
@@ -165,38 +175,40 @@ export class DetailComponent implements OnInit {
   }
 
   /**
-   * 留言按讚
-   * @param id
-   * @param index
+   * 留言按讚或取消按讚
+   * @param item
    */
-  like(id: number, index: number): void {
-    if (id === index) {
-      if (this.data[id].liked) {
-        this.data[id].likes -= 1;
-        this.data[id].liked = false;
-      }
-      else {
-          this.data[id].likes += 1;
-          this.data[id].liked = true;
-      }
+  like(item: Data): void {
+    if (item.liked) {
+      item.likes--;
+      item.liked = false;
+    }
+    else {
+      item.likes++;
+      item.liked = true;
     }
   }
 
   /**
-   * 留言倒讚
-   * @param id
-   * @param index
+   * 留言倒讚或取消倒讚
+   * @param item
    */
-  dislike(id: number, index: number): void {
-    if (id === index) {
-      if (this.data[id].disliked) {
-        this.data[id].dislikes -= 1;
-        this.data[id].disliked = false;
-      }
-      else {
-          this.data[id].dislikes += 1;
-          this.data[id].disliked = true;
-      }
+  dislike(item: Data): void {
+    if (item.disliked) {
+      item.dislikes--;
+      item.disliked = false;
     }
+    else {
+      item.dislikes++;
+      item.disliked = true;
+    }
+  }
+
+  /**
+   * 取消/顯示回復框
+   * @param item
+   */
+  showReply(item: Data): void {
+    item.isReplying = !item.isReplying;
   }
 }
