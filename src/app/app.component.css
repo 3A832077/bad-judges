@@ -57,5 +57,11 @@ nz-footer {
   height: 30px;
 }
 
+::ng-deep .ant-layout {
+  background: #fff;
+}
 
+::ng-deep .ant-layout-footer{
+  background: #fff;
+}
 

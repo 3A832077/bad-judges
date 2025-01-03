@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -33,6 +33,7 @@ interface Data extends User {
   liked?: boolean;
   disliked?: boolean;
   children?: any[];
+  replyValue?: string;
 }
 
 @Component({
@@ -63,7 +64,7 @@ export class DetailComponent implements OnInit {
 
   formattedDate = formatDate(this.date, this.format, 'zh-TW');
 
-  data:Data[] = [
+  data: Data[] = [
     {
       id: 0,
       author: '定延',
@@ -77,9 +78,9 @@ export class DetailComponent implements OnInit {
       disliked: false,
       children: [{
         id: 0,
-        author: 'User 2',
+        author: '匿名',
         avatar: 'https://example.com/avatar2.png',
-        content: 'This is a reply.',
+        content: '我也覺得很好聽',
         datetime: '30 minutes ago',
         likes: 0,
         dislikes: 0,
@@ -97,7 +98,7 @@ export class DetailComponent implements OnInit {
       dislikes: 0,
       likes: 0,
       liked: false,
-      disliked: false,
+      disliked: false
     }
   ];
 
@@ -107,12 +108,10 @@ export class DetailComponent implements OnInit {
 
   submitting = false;
 
-  replyValue = '';
-
   constructor (
                 private router: Router,
                 private route: ActivatedRoute,
-                private message: NzMessageService
+                private message: NzMessageService,
               ){
                 const navigationInfo = this.router.getCurrentNavigation()?.extras?.state?.['info'];
                 if (navigationInfo) {
@@ -129,42 +128,8 @@ export class DetailComponent implements OnInit {
             }
 
   ngOnInit(): void {
-    this.currentState$ = this.route.paramMap.pipe(
-      map(() => window.history.state.info.queryParams)
-    );
-  }
-
-  /**
-   * 新增留言或回覆
-   * @param content 留言或回覆的內容
-   * @param item 當筆要回復的資料
-   */
-  handleComment(content: string, item?: any): void {
-    if (content === '') {
-      this.message.create('warning', '請輸入留言內容');
-      return;
-    }
-    else{
-      const comment = {
-        id: this.gId++,
-        author: '當前使用者',
-        avatar: this.info.pic,
-        content,
-        datetime: this.formattedDate,
-        likes: 0,
-        dislikes: 0,
-        isReplying: false,
-        children: []
-      };
-      if (item) {
-        item.children.push(comment);
-        item.isReplying = false;
-        this.replyValue = '';
-      }
-      else {
-        this.data.push(comment);
-      }
-    }
+    // 取得路由參數
+    this.currentState$ = this.route.paramMap.pipe(map(() => window.history.state.info.queryParams));
   }
 
   /**
@@ -210,5 +175,43 @@ export class DetailComponent implements OnInit {
    */
   showReply(item: Data): void {
     item.isReplying = !item.isReplying;
+  }
+
+  /**
+   * 新增留言或回覆
+   * @param item 當筆要回復的資料
+   */
+  handleComment(item?: any): void {
+    if (!item && this.inputValue === '') {
+      this.message.create('warning', '請輸入留言內容');
+      return;
+    }
+    else{
+      const comment = {
+        id: item ? item.children.length : this.data.length,
+        author: this.info.name,
+        avatar: this.info.pic,
+        content: item ? item.replyValue : this.inputValue,
+        datetime: this.formattedDate,
+        likes: 0,
+        dislikes: 0,
+        disliked: false,
+        liked: false,
+        isReplying: false,
+        replyValue: '',
+        children: []
+      };
+      if (item) {
+        // 回覆
+        item.children = [...item.children, comment];
+        item.isReplying = false;
+        item.replyValue = '';
+      }
+      else {
+        // 新增留言
+        this.data = [...this.data, comment];
+        this.inputValue = '';
+      }
+    }
   }
 }
