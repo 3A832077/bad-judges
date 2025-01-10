@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule, DOCUMENT, formatDate } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -112,17 +112,21 @@ export class DetailComponent implements OnInit {
                 private router: Router,
                 private route: ActivatedRoute,
                 private message: NzMessageService,
+                @Inject(DOCUMENT) private document: Document
               ){
                 const navigationInfo = this.router.getCurrentNavigation()?.extras?.state?.['info'];
-                if (navigationInfo) {
+                const localStorage = document.defaultView?.localStorage;
+                if (localStorage) {
+                  if (navigationInfo) {
                   this.info = navigationInfo;
                   localStorage.setItem('info', JSON.stringify(this.info));
                 }
                 else {
-                // 如果是刷新頁面，從 localStorage 中取資料
-                const storedInfo = localStorage.getItem('info');
-                if (storedInfo) {
-                  this.info = JSON.parse(storedInfo);
+                  // 如果是刷新頁面，從 localStorage 中取資料
+                  const storedInfo = localStorage.getItem('info');
+                  if (storedInfo) {
+                    this.info = JSON.parse(storedInfo);
+                  }
                 }
               }
             }
@@ -136,7 +140,7 @@ export class DetailComponent implements OnInit {
    * 返回法官列表
    */
   goBack(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/judges']);
   }
 
   /**

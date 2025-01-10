@@ -167,7 +167,7 @@ export class JudgesComponent implements OnInit {
       filter((event: any) => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       // 如果當前路由是 /home，重置 selectedItemId
-      if (event.url === '/home') {
+      if (event.url === '/judges') {
         this.selectedId = null;
       }
     });
@@ -181,7 +181,7 @@ export class JudgesComponent implements OnInit {
    * @param pic
    */
   toMessageBoard(id: number, name: string, detail: string, pic: string): void {
-    this.router.navigateByUrl('/home/detail/'+ id , {
+    this.router.navigateByUrl('/judges/detail/'+ id , {
       state: { info: { name: name, detail: detail, pic: pic } },
     });
   }
