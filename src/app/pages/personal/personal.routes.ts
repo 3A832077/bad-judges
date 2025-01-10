@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { PersonalComponent } from './personal.component';
 
-export const PERSONAL_ROUTES: Routes = [
+export const PersonalRoutes: Routes = [
   {
     path: '', component: PersonalComponent,
   },
