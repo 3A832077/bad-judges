@@ -1,14 +1,23 @@
 <nz-layout>
-  <nz-header>
+  <header>
     <div class="app-header">
       <div class="logo">logo</div>
-      <ul nz-menu nzTheme="light" nzMode="horizontal" class="header-menu">
-        <li nz-menu-item [nzSelected]="isActive('/judges')" routerLink="/judges">法官列表</li>
-        <!-- <li nz-menu-item [nzSelected]="isActive('/personal')" routerLink="/personal">個人檔案</li> -->
-        <li nz-menu-item [nzSelected]="isActive('/login')" routerLink="/login">登入</li>
-      </ul>
+      <nav>
+        <ul nz-menu nzTheme="light" nzMode="horizontal" class="header-menu">
+          <li nz-menu-item routerLink="/judges">法官列表</li>
+          <!-- <li nz-menu-item [nzSelected]="isActive('/personal')" routerLink="/personal">個人檔案</li> -->
+          <li nz-menu-item routerLink="/login">登入</li>
+          <li nz-submenu nzTitle="管理後台" nzPlacement="bottomRight" >
+            <ul>
+              <li nz-menu-item routerLink="/backend/judges" [nzSelected]="isActive('/backend/judges')">
+                <span>法官</span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </nz-header>
+  </header>
   <nz-content>
     <div class="inner-content">
       <router-outlet></router-outlet>

@@ -23,10 +23,9 @@ type List = {
     selector: 'app-judges',
     imports: [
         NzCardModule, NzGridModule, NzAvatarModule,
-        CommonModule, RouterLink, RouterOutlet,
-        NzPaginationModule, NzInputModule, NzIconModule,
-        FormsModule, ReactiveFormsModule, NzEmptyModule,
-        NzListModule
+        CommonModule, RouterOutlet, NzPaginationModule,
+        NzInputModule, NzIconModule, FormsModule,
+        ReactiveFormsModule, NzEmptyModule, NzListModule
     ],
     templateUrl: './judges.component.html',
     styleUrls: ['./judges.component.css']
