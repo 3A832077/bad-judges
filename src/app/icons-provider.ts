@@ -11,6 +11,7 @@ import {
   UserOutline,
   LockOutline,
   MailOutline,
+  PlusOutline
 } from '@ant-design/icons-angular/icons';
 
 export const icons = [
@@ -19,5 +20,5 @@ export const icons = [
                         LikeOutline,LikeTwoTone,
                         DislikeOutline, DislikeTwoTone,
                         SearchOutline, UserOutline, LockOutline,
-                        MailOutline
+                        MailOutline, PlusOutline
                     ];

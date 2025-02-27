@@ -13,17 +13,17 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 @Component({
-  selector: 'backend-judges',
+  selector: 'app-dempartments',
   imports: [
               NzTableModule, NzButtonModule, NzModalModule,
               NzDividerModule, NzFormModule, NzInputModule,
               FormsModule, ReactiveFormsModule, NzIconModule,
               CommonModule, NzLayoutModule
-            ],
-  templateUrl: './judges.component.html',
-  styleUrl: './judges.component.css'
+           ],
+  templateUrl: './dempartments.component.html',
+  styleUrl: './dempartments.component.css'
 })
-export class JudgesComponent implements OnInit {
+export class DempartmentsComponent implements OnInit {
 
   pageIndex : number = 1;
 
@@ -43,8 +43,5 @@ export class JudgesComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
-
-
 
 }

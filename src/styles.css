@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+.editImg{
+  vertical-align: text-bottom;
+}
+
+.deleteImg{
+  vertical-align: top;
+}
+
+.header-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.search-form {
+  margin-bottom: 0;
+}
+
+.search-box {
+  padding: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttonDiv {
+  margin-top: 16px;
+  gap: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
