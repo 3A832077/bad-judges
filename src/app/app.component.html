@@ -3,17 +3,17 @@
     <div class="app-header">
       <div class="logo">logo</div>
       <nav>
-        <ul nz-menu nzTheme="light" nzMode="horizontal" class="header-menu">
+        <ul nz-menu nzMode="horizontal" class="header-menu">
           <li nz-menu-item routerLink="/judges" [nzSelected]="isActive('/judges')">法官列表</li>
           <!-- <li nz-menu-item [nzSelected]="isActive('/personal')" routerLink="/personal">個人檔案</li> -->
-          <li nz-menu-item routerLink="/login">登入</li>
           <li nz-menu-item routerLink="/backend">管理後臺</li>
         </ul>
+        <button nz-button nzType="link" style="color:black" (click)="openModal()">登入</button>
       </nav>
     </div>
   </header>
   <nz-content>
-    <div class="inner-content">
+    <div class="inner-content" [ngStyle]="{'padding': isActive('/backend') ? '0' : '24px'}">
       <router-outlet></router-outlet>
     </div>
   </nz-content>

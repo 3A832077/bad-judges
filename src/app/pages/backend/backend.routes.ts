@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { BackendComponent } from './backend.component';
 import { JudgesComponent } from './judges/judges.component';
-import { DempartmentsComponent } from './dempartments/dempartments.component';
+import { JudicialComponent } from './judicial/judicial.component';
 
 export const BackendRoutes: Routes = [
   {
@@ -17,8 +17,8 @@ export const BackendRoutes: Routes = [
         component: JudgesComponent
       },
       {
-        path: 'dempartments',
-        component: DempartmentsComponent
+        path: 'judicial',
+        component: JudicialComponent
       }
     ]
   },

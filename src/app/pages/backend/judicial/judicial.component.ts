@@ -13,17 +13,17 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 @Component({
-  selector: 'app-dempartments',
+  selector: 'app-judicial',
   imports: [
               NzTableModule, NzButtonModule, NzModalModule,
               NzDividerModule, NzFormModule, NzInputModule,
               FormsModule, ReactiveFormsModule, NzIconModule,
               CommonModule, NzLayoutModule
            ],
-  templateUrl: './dempartments.component.html',
-  styleUrl: './dempartments.component.css'
+  templateUrl: './judicial.component.html',
+  styleUrl: './judicial.component.css'
 })
-export class DempartmentsComponent implements OnInit {
+export class JudicialComponent implements OnInit {
 
   pageIndex : number = 1;
 
@@ -42,6 +42,9 @@ export class DempartmentsComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  getJudicial(): void {
   }
 
 }

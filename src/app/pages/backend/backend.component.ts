@@ -16,6 +16,8 @@ import { RouterLink, RouterOutlet, Router } from '@angular/router';
 })
 export class BackendComponent implements OnInit {
 
+  isCollapsed = false;
+
   constructor(
                 private router: Router
              ) {}
@@ -30,7 +32,7 @@ export class BackendComponent implements OnInit {
    * @returns
    */
   isActive(url: string): boolean {
-    return this.router.url === url;
+    return this.router.url.startsWith(url);
   }
 
 }

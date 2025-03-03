@@ -7,13 +7,18 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
+import { LoginComponent } from './pages/login/login.component';
+
 @Component({
     selector: 'app-root',
+    providers: [ NzModalService ],
     imports: [
-              CommonModule, RouterLink, RouterOutlet,
-              NzIconModule, NzLayoutModule, NzMenuModule,
-              NzCardModule, NzDividerModule, NzButtonModule
-            ],
+                CommonModule, RouterLink, RouterOutlet,
+                NzIconModule, NzLayoutModule, NzMenuModule,
+                NzCardModule, NzDividerModule, NzButtonModule,
+                NzModalModule
+             ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
@@ -22,7 +27,8 @@ export class AppComponent implements OnInit {
   isCollapsed = false;
 
   constructor (
-               private router: Router,
+                private router: Router,
+                private modalService: NzModalService
               ) { }
 
   ngOnInit() {
@@ -34,7 +40,19 @@ export class AppComponent implements OnInit {
    * @returns
    */
   isActive(url: string): boolean {
-    return this.router.url === url;
+    return this.router.url.startsWith(url);
+  }
+
+  /**
+   * 打開登入modal
+   */
+  openModal(): void {
+    this.modalService.create({
+      nzContent: LoginComponent,
+      nzFooter: null,
+      nzZIndex: 2,
+      nzMaskClosable: false,
+    });
   }
 
 }
