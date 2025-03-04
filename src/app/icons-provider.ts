@@ -1,6 +1,5 @@
 import {
-  MenuFoldOutline,
-  MenuUnfoldOutline,
+  MenuOutline,
   FormOutline,
   DashboardOutline,
   LikeOutline,
@@ -13,15 +12,14 @@ import {
   MailOutline,
   PlusOutline,
   ContactsOutline,
-  UnorderedListOutline
+  UnorderedListOutline,
+  BankOutline
 } from '@ant-design/icons-angular/icons';
 
 export const icons = [
-                        MenuFoldOutline, MenuUnfoldOutline,
-                        DashboardOutline, FormOutline,
-                        LikeOutline,LikeTwoTone,
-                        DislikeOutline, DislikeTwoTone,
-                        SearchOutline, UserOutline, LockOutline,
-                        MailOutline, PlusOutline, ContactsOutline,
-                        UnorderedListOutline
+                        MenuOutline, DashboardOutline, FormOutline,
+                        LikeTwoTone, LikeOutline, DislikeTwoTone,
+                        DislikeOutline, SearchOutline, UserOutline,
+                        LockOutline, MailOutline, PlusOutline,
+                        ContactsOutline, UnorderedListOutline, BankOutline
                     ];

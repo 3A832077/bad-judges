@@ -13,6 +13,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { JudgesService } from './judges.service';
 import { catchError, EMPTY, tap } from 'rxjs';
+import { FormComponent } from './form/form.component';
 
 @Component({
   selector: 'backend-judges',
@@ -44,7 +45,7 @@ export class JudgesComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
-    this.getJudges();
+    // this.getJudges();
   }
 
   /**
@@ -75,8 +76,22 @@ export class JudgesComponent implements OnInit {
       })).subscribe(() => {
       this.loading = false;
     });
+  }
 
-
+  /**
+   * 打開新增modal
+   */
+  openModal(): void {
+    this.modal.create({
+      nzTitle: '新增法官',
+      nzContent: FormComponent,
+      nzClosable: false,
+      nzMaskClosable: false,
+      nzZIndex: 60,
+      nzCentered: true,
+      nzData: this.displayedList,
+      nzFooter: null
+    });
   }
 
 

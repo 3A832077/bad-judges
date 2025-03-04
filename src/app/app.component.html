@@ -1,12 +1,15 @@
 <nz-layout>
   <header>
     <div class="app-header">
-      <div class="logo">logo</div>
+      <div class="logo">
+        <span class="trigger" nz-icon nzType="menu" (click)="siderService.toggleSidebar()" class="menuIcon"></span>
+        logo
+      </div>
       <nav>
         <ul nz-menu nzMode="horizontal" class="header-menu">
           <li nz-menu-item routerLink="/judges" [nzSelected]="isActive('/judges')">法官列表</li>
           <!-- <li nz-menu-item [nzSelected]="isActive('/personal')" routerLink="/personal">個人檔案</li> -->
-          <li nz-menu-item routerLink="/backend">管理後臺</li>
+          <li nz-menu-item routerLink="/backend" [nzSelected]="isActive('/backend')">管理後臺</li>
         </ul>
         <button nz-button nzType="link" style="color:black" (click)="openModal()">登入</button>
       </nav>

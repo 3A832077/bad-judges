@@ -9,30 +9,34 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
 import { LoginComponent } from './pages/login/login.component';
+import { SiderService } from './service/sider.service';
 
 @Component({
-    selector: 'app-root',
-    providers: [ NzModalService ],
-    imports: [
-                CommonModule, RouterLink, RouterOutlet,
-                NzIconModule, NzLayoutModule, NzMenuModule,
-                NzCardModule, NzDividerModule, NzButtonModule,
-                NzModalModule
-             ],
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+  selector: 'app-root',
+  providers: [NzModalService],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterOutlet,
+    NzIconModule,
+    NzLayoutModule,
+    NzMenuModule,
+    NzCardModule,
+    NzDividerModule,
+    NzButtonModule,
+    NzModalModule,
+  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private modalService: NzModalService,
+    public siderService: SiderService
+  ) {}
 
-  isCollapsed = false;
-
-  constructor (
-                private router: Router,
-                private modalService: NzModalService
-              ) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * 僅當前路徑完全相等時返回 true
@@ -54,5 +58,4 @@ export class AppComponent implements OnInit {
       nzMaskClosable: false,
     });
   }
-
 }

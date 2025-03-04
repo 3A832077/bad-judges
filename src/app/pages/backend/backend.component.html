@@ -1,13 +1,15 @@
 <nz-layout>
   <nz-layout>
-    <nz-sider nzWidth="150px" nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <nz-sider nzWidth="128px" nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
       <ul nz-menu nzMode="inline" class="sider-menu" nzTheme="light">
-        <li nz-menu-item routerLink="/backend/judges" [nzSelected]="isActive('/backend/judges')">
+        <li nz-menu-item routerLink="/backend/judges" [nzSelected]="isActive('/backend/judges')"
+            nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? '法官管理' : ''">
           <nz-icon nzType="contacts" nzTheme="outline" />
           <span>法官管理</span>
         </li>
-        <li nz-menu-item routerLink="/backend/judicial">
-          <nz-icon nzType="unordered-list" nzTheme="outline" />
+        <li nz-menu-item routerLink="/backend/judicial" nz-tooltip [nzSelected]="isActive('/backend/judicial')"
+            nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? '法院管理' : ''">
+          <nz-icon nzType="bank" nzTheme="outline" />
           <span>法院管理</span>
         </li>
       </ul>

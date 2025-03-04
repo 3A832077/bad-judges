@@ -52,8 +52,8 @@ nz-content {
 
 .logo{
   display: flex;
-  align-items: flex-start;
-  width: 160px;
+  justify-content: space-between;
+  width: 70px;
 }
 
 nz-footer {
@@ -82,4 +82,9 @@ nav{
 
 ::ng-deep .ant-menu{
   background: none;
+}
+
+.menuIcon{
+  font-size: 18px;
+  cursor: pointer;
 }
