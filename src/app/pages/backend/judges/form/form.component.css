@@ -1,0 +1,9 @@
+.add-btn{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formArray{
+  padding-bottom: 10px;
+  display: flex;
+}

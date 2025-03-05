@@ -14,3 +14,8 @@ nz-pagination{
   margin-top: 20px;
   text-align: center;
 }
+
+::ng-deep .ant-card-meta-description{
+  white-space: pre;
+  line-height: 2.2;
+}

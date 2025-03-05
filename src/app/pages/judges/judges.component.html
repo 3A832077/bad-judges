@@ -1,6 +1,6 @@
-<ng-container *ngIf="!selectedId">
+<ng-container *ngIf="!selected">
   <div nz-col [nzSpan]="6">
-    <form nz-form [formGroup]="form">
+    <!-- <form nz-form [formGroup]="form">
       <nz-form-item>
         <nz-form-control [nzSpan]="16">
           <nz-input-group nzPrefixIcon="search" [nzSuffix]="inputClearTp">
@@ -17,22 +17,21 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-    </form>
+    </form> -->
   </div>
   <nz-list nzGrid>
     <div nz-row [nzGutter]="48" style="padding-top: 20px;">
       <ng-container *ngFor="let item of displayedList">
-        <div nz-col [nzXl]="6" [nzLg]="8" [nzMd]="12" [nzSm]="16" nzSpan="24" style="padding: 10px;" >
-          <nz-card class="pointer" (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
+        <div nz-col [nzXl]="4" [nzLg]="8" [nzMd]="12" [nzSm]="16" nzSpan="24" style="padding: 10px;" >
+          <nz-card class="pointer" [routerLink]="['/judges/detail', item.name]" nzHoverable >
             <nz-card-meta
               [nzAvatar]="avatarTemplate"
               [nzTitle]="item.name"
-              [nzDescription]="item.description">
+              [nzDescription]="item.info">
             </nz-card-meta>
           </nz-card>
           <ng-template #avatarTemplate>
-            <nz-avatar [nzSize]="120" [nzSrc]="item.avatarUrl"
-              (click)="toMessageBoard(item.id, item.name, item.description, item.avatarUrl)">
+            <nz-avatar [nzSize]="120" [routerLink]="['/judges/detail', item.name]">
             </nz-avatar>
           </ng-template>
         </div>
@@ -49,17 +48,16 @@
       *ngIf="displayedList.length > 0"
       nzShowSizeChanger
       nzResponsive
-      [nzPageSizeOptions]="[24, 36, 48, 60, 72]"
-      [nzPageIndex]="currentPage"
+      [nzPageIndex]="pageIndex"
       [nzTotal]="total"
       [nzPageSize]="pageSize"
-      (nzPageIndexChange)="pageChange($event, pageSize)"
-      (nzPageSizeChange)="pageChange(currentPage, $event)">
+      (nzPageIndexChange)="getJudges($event, pageSize)"
+      (nzPageSizeChange)="getJudges(pageIndex, $event)">
     </nz-pagination>
   </div>
 </ng-container>
 
-<router-outlet (activate)="onActivate($event)"></router-outlet>
+<router-outlet (activate)="onActivate($event)" (deactivate)="selected = null"></router-outlet>
 
 
 

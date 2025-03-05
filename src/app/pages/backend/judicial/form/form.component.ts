@@ -7,6 +7,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
+import { FormService } from './form.service';
 
 @Component({
   selector: 'judicial-form',
@@ -27,6 +28,7 @@ export class FormComponent implements OnInit{
   constructor(
                 private fb: FormBuilder,
                 private modal: NzModalRef,
+                private formService: FormService,
              ){}
 
   ngOnInit(): void {
@@ -36,7 +38,12 @@ export class FormComponent implements OnInit{
   }
 
   submitForm(): void {
-
+    const params = { ...this.form.value };
+    this.formService.addJudicial(params).subscribe((res: any) => {
+      if (res){
+        this.modal.close('success');
+      }
+    });
   }
 
   close(): void {

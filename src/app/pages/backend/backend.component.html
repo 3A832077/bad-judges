@@ -14,7 +14,7 @@
         </li>
       </ul>
     </nz-sider>
-    <nz-layout class="inner-layout">
+    <nz-layout class="inner-layout" [class.collapsed]="isCollapsed">
       <nz-content>
         <router-outlet></router-outlet>
       </nz-content>

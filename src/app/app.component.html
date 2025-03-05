@@ -2,7 +2,7 @@
   <header>
     <div class="app-header">
       <div class="logo">
-        <span class="trigger" nz-icon nzType="menu" (click)="siderService.toggleSidebar()" class="menuIcon"></span>
+        <span class="trigger" nz-icon nzType="menu" (click)="siderService.toggleSidebar()" class="menuIcon" *ngIf="isActive('/backend')"></span>
         logo
       </div>
       <nav>

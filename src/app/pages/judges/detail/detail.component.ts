@@ -1,40 +1,25 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { CommonModule, DOCUMENT, formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { map, Observable } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
-interface User {
-  author: string;
-  avatar: string;
-}
-
-interface Data extends User {
-  id: number;
-  isReplying: boolean;
-  reply?: string;
-  content: string;
-  datetime: string;
-  dislikes: number;
-  likes: number;
-  liked?: boolean;
-  disliked?: boolean;
-  children?: any[];
-  replyValue?: string;
-}
+import { JudgesService } from '../judges.service';
 
 @Component({
     selector: 'app-detail',
@@ -43,7 +28,8 @@ interface Data extends User {
               NzListModule, CommonModule, NzCardModule,
               NzFormModule, NzInputModule, NzButtonModule,
               NzPageHeaderModule, NzIconModule, NzToolTipModule,
-              NzDividerModule, FormsModule, ReactiveFormsModule
+              NzDividerModule, FormsModule, ReactiveFormsModule,
+              NzDescriptionsModule, NzSpaceModule, NzStatisticModule
             ],
     templateUrl: './detail.component.html',
     styleUrl: './detail.component.css'
@@ -52,88 +38,74 @@ export class DetailComponent implements OnInit {
 
   @Input() id = '';
 
-  currentState$: Observable<any> | undefined;
-
-  info: any = {}
-
   date = new Date();
-
-  gId: number = 0;
 
   format = 'yyyy-MM-dd HH:mm:ss';
 
   formattedDate = formatDate(this.date, this.format, 'zh-TW');
 
-  data: Data[] = [
-    {
-      id: 0,
-      author: '定延',
-      avatar: '2.jpg',
-      content: 'strategy 真的很好聽仙曲!',
-      isReplying: false,
-      datetime: this.formattedDate,
-      dislikes: 0,
-      likes: 0,
-      liked: false,
-      disliked: false,
-      children: [{
-        id: 0,
-        author: '匿名',
-        avatar: 'https://example.com/avatar2.png',
-        content: '我也覺得很好聽',
-        datetime: '30 minutes ago',
-        likes: 0,
-        dislikes: 0,
-        isReplying: false,
-        children: [],
-      }],
-    },
-    {
-      id: 1,
-      author: '志效',
-      avatar: '5.jpg',
-      content: '根本是神專!',
-      isReplying: false,
-      datetime: this.formattedDate,
-      dislikes: 0,
-      likes: 0,
-      liked: false,
-      disliked: false
-    }
-  ];
+  data: any = {};
 
   inputValue = '';
 
-  datas: any = [];
+  commentList: any[] = [];
 
   submitting = false;
+
+  pageIndex: number = 1;
+
+  pageSize: number = 10;
+
+  total: number = 0;
 
   constructor (
                 private router: Router,
                 private route: ActivatedRoute,
                 private message: NzMessageService,
-                @Inject(DOCUMENT) private document: Document
-              ){
-                const navigationInfo = this.router.getCurrentNavigation()?.extras?.state?.['info'];
-                const localStorage = document.defaultView?.localStorage;
-                if (localStorage) {
-                  if (navigationInfo) {
-                  this.info = navigationInfo;
-                  localStorage.setItem('info', JSON.stringify(this.info));
-                }
-                else {
-                  // 如果是刷新頁面，從 localStorage 中取資料
-                  const storedInfo = localStorage.getItem('info');
-                  if (storedInfo) {
-                    this.info = JSON.parse(storedInfo);
-                  }
-                }
-              }
-            }
+                private judgesService: JudgesService,
+              ){}
 
   ngOnInit(): void {
-    // 取得路由參數
-    this.currentState$ = this.route.paramMap.pipe(map(() => window.history.state.info.queryParams));
+    this.getJudge();
+  }
+
+  getJudge(): void {
+    this.judgesService.getJudge(this.id).pipe(
+      tap(res => {
+        this.data = res;
+      }),
+      catchError(error => {
+        return of(null);
+      })
+    ).subscribe(() =>
+      this.getComments()
+    );
+  }
+
+  getComments(pageIndex: number = 1, pageSize: number = 10, filterFn: any = null): void {
+    const params = {
+      name: this.data.name,
+      page: pageIndex,
+      size: pageSize,
+      order: 'ASC'
+    }
+
+    this.judgesService.getComments(this.id, params).pipe(
+      tap(res => {
+        res.items.forEach((item: any) => {
+          item.created = formatDate(item.created, this.format, 'zh-TW');
+        })
+        this.commentList = res;
+        this.total = res.total;
+        this.pageIndex = res.page;
+        this.pageSize = pageSize;
+      }),
+      catchError(error => {
+        this.commentList = [];
+        this.total = 0;
+        return of(null);
+      })
+    ).subscribe();
   }
 
   /**
@@ -147,75 +119,75 @@ export class DetailComponent implements OnInit {
    * 留言按讚或取消按讚
    * @param item
    */
-  like(item: Data): void {
-    if (item.liked) {
-      item.likes--;
-      item.liked = false;
-    }
-    else {
-      item.likes++;
-      item.liked = true;
-    }
-  }
+  // like(item: Data): void {
+  //   if (item.liked) {
+  //     item.likes--;
+  //     item.liked = false;
+  //   }
+  //   else {
+  //     item.likes++;
+  //     item.liked = true;
+  //   }
+  // }
 
   /**
    * 留言倒讚或取消倒讚
    * @param item
    */
-  dislike(item: Data): void {
-    if (item.disliked) {
-      item.dislikes--;
-      item.disliked = false;
-    }
-    else {
-      item.dislikes++;
-      item.disliked = true;
-    }
-  }
+  // dislike(item: Data): void {
+  //   if (item.disliked) {
+  //     item.dislikes--;
+  //     item.disliked = false;
+  //   }
+  //   else {
+  //     item.dislikes++;
+  //     item.disliked = true;
+  //   }
+  // }
 
   /**
    * 取消/顯示回復框
    * @param item
    */
-  showReply(item: Data): void {
-    item.isReplying = !item.isReplying;
-  }
+  // showReply(item: Data): void {
+  //   item.isReplying = !item.isReplying;
+  // }
 
   /**
    * 新增留言或回覆
    * @param item 當筆要回復的資料
    */
   handleComment(item?: any): void {
-    if (!item && this.inputValue === '') {
-      this.message.create('warning', '請輸入留言內容');
-      return;
-    }
-    else{
-      const comment = {
-        id: item ? item.children.length : this.data.length,
-        author: this.info.name,
-        avatar: this.info.pic,
-        content: item ? item.replyValue : this.inputValue,
-        datetime: this.formattedDate,
-        likes: 0,
-        dislikes: 0,
-        disliked: false,
-        liked: false,
-        isReplying: false,
-        replyValue: '',
-        children: []
-      };
-      if (item) {
-        // 回覆
-        item.children = [...item.children, comment];
-        item.isReplying = false;
-        item.replyValue = '';
-      }
-      else {
-        // 新增留言
-        this.data = [...this.data, comment];
-        this.inputValue = '';
-      }
-    }
+    // if (!item && this.inputValue === '') {
+    //   this.message.create('warning', '請輸入留言內容');
+    //   return;
+    // }
+    // else{
+    //   const comment = {
+    //     id: item ? item.children.length : this.data.length,
+    //     author: this.info.name,
+    //     avatar: this.info.pic,
+    //     content: item ? item.replyValue : this.inputValue,
+    //     datetime: this.formattedDate,
+    //     likes: 0,
+    //     dislikes: 0,
+    //     disliked: false,
+    //     liked: false,
+    //     isReplying: false,
+    //     replyValue: '',
+    //     children: []
+    //   };
+    //   if (item) {
+    //     // 回覆
+    //     item.children = [...item.children, comment];
+    //     item.isReplying = false;
+    //     item.replyValue = '';
+    //   }
+    //   else {
+    //     // 新增留言
+    //     this.data = [...this.data, comment];
+    //     this.inputValue = '';
+    //   }
+    // }
   }
 }

@@ -11,9 +11,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { JudgesService } from './judges.service';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { FormComponent } from './form/form.component';
+import { JudgesService } from '../../judges/judges.service';
 
 @Component({
   selector: 'backend-judges',
@@ -45,7 +45,7 @@ export class JudgesComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
-    // this.getJudges();
+    this.getJudges();
   }
 
   /**
@@ -74,7 +74,7 @@ export class JudgesComponent implements OnInit {
         this.total = 0;
         return EMPTY;
       })).subscribe(() => {
-      this.loading = false;
+        this.loading = false;
     });
   }
 
@@ -89,7 +89,6 @@ export class JudgesComponent implements OnInit {
       nzMaskClosable: false,
       nzZIndex: 60,
       nzCentered: true,
-      nzData: this.displayedList,
       nzFooter: null
     });
   }

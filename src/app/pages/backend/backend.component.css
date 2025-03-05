@@ -1,12 +1,23 @@
-.sider-menu {
-  height: 100%;
-  border-right: 0;
+nz-sider {
+  position: fixed;
+  left: 0;
+  top: 73px;
+  height: 100vh;
+  z-index: 1000;
 }
 
 nz-content {
   background: #fff;
   padding: 10px;
   min-height: 280px;
+  margin-left: 115px;        /* 讓內容區往右移 */
+  width: calc(100% - 115px); /* 避免內容被壓縮 */
+  transition: margin-left 0.3s;
+}
+
+.collapsed nz-content {
+  margin-left: 80px; /* 如果側邊欄收起，內容區往左縮 */
+  width: calc(100% - 80px);
 }
 
 ::ng-deep .ant-layout-sider {

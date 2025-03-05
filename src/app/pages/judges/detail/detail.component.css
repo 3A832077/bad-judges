@@ -40,7 +40,7 @@
 }
 
 .comment-section {
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 .comment-section h1 {
@@ -69,10 +69,28 @@ button{
 
 nz-card{
   box-shadow: 1px 3px 0 2px #00000005;
+  border: none;
+  margin-left: 34px;
 }
 
 .goBack{
   position: relative;
   top: -20px;
   margin-left: -16px;
+}
+
+.content {
+  display: flex;
+  margin-left: 32px;
+}
+
+@media (max-width: 576px) {
+  .content {
+    display: block;
+  }
+
+  .main {
+    width: 100%;
+    margin-bottom: 12px;
+  }
 }

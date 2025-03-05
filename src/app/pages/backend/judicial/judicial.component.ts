@@ -52,14 +52,15 @@ export class JudicialComponent implements OnInit {
     this.judicialService.getJudicials().pipe(
       tap((res: any) => {
         this.loading = false;
-        this.displayedList = res;
+        this.displayedList = res.items;
       }),
       catchError((error: any) => {
         this.loading = false;
         this.displayedList = [];
         return EMPTY;
-      })
-    ).subscribe();
+      })).subscribe(() => {
+        this.loading = false;
+    });
   }
 
   /**
